@@ -1,7 +1,7 @@
 'use strict'
 
-const CID = require('cids')
-const multihashing = require('multihashing-async')
+const { CID } = require('multiformats')
+const { sha256 } = require('multiformats/hashes/sha2')
 
 const TextEncoder = require('ipfs-utils/src/text-encoder')
 
@@ -13,7 +13,7 @@ const TextEncoder = require('ipfs-utils/src/text-encoder')
  */
 module.exports.namespaceToCid = async (namespace) => {
   const bytes = new TextEncoder().encode(namespace)
-  const hash = await multihashing(bytes, 'sha2-256')
+  const hash = await sha256.digest(bytes)
 
-  return new CID(hash)
+  return CID.createV0(hash)
 }
